@@ -1,0 +1,2 @@
+# AutoComplementary-Giratory-Tetranucleotides
+ACGT
