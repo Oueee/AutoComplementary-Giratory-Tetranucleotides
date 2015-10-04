@@ -19,5 +19,6 @@ public class Algorithm {
 		Tetranucleotide a = new Tetranucleotide("ACGT");
 		
 		Graph g = new Graph(new Ensemble(a));
+		System.out.println("Code " + (g.checkCircular()?"circulaire":"non circulaire"));
 	}
 }
