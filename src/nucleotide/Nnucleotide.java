@@ -35,6 +35,6 @@ public class Nnucleotide {
 	 * @return
 	 */
 	public String getNucleotids(){return this.nucleotids;}
-	
+	public boolean equals(Nnucleotide n){return this.nucleotids.equals(n.nucleotids);}
 	public String toString(){return this.nucleotids;}
 }

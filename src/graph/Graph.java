@@ -2,8 +2,10 @@ package graph;
 
 import java.util.Set;
 
-import org.jgrapht.ListenableGraph;
-import org.jgrapht.graph.ListenableDirectedGraph;
+import org.jgrapht.UndirectedGraph;
+import org.jgrapht.graph.SimpleGraph;
+import org.jgrapht.graph.DefaultEdge;
+
 
 import ensemble.Ensemble;
 import nucleotide.Nnucleotide;
@@ -17,21 +19,21 @@ import nucleotide.Tetranucleotide;
  */
 public class Graph {
 	/** The graph set of one ensemble, including every n-nucleotide and its edges */
-	private ListenableGraph<Nnucleotide, ?> g;
+	private UndirectedGraph<Nnucleotide, DefaultEdge> graph;
 	
 	/**
 	 * Initializes the graph using the Tetranucleotides contained in <b>ensemble</b>
 	 * and making every possible arrangement out of them.
 	 * @param ensemble The ensemble containing every Tetranucleotide to handle in the graph.
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Graph(Ensemble ensemble){
-		this.g = new ListenableDirectedGraph(Nnucleotide.class);
+		this.graph = new SimpleGraph<Nnucleotide, DefaultEdge>(DefaultEdge.class);
 		if(ensemble.nbTetranucleotids() == 1)
 			this.buildFirst(ensemble.getFirstTetranucleotid());
 		else{
 			//TODO Generalize the graph build.
 		}
+		//checkCircular();
 	}
 	
 	/**
@@ -52,10 +54,10 @@ public class Graph {
 	private void buildFirst(Tetranucleotide tetra){
 		//ACGT => A-CGT AC-GT ACG-T
 		for(Nnucleotide[] split : tetra.split()){
-			g.addVertex(split[0]);
-			g.addVertex(split[1]);
+			graph.addVertex(split[0]);
+			graph.addVertex(split[1]);
 			
-			g.addEdge(split[0], split[1]);
+			graph.addEdge(split[0], split[1]);
 		}
 	}
 	
@@ -68,12 +70,21 @@ public class Graph {
 	 * The real challenge will be to apply this to everything in the graph.
 	 * @return <b>true</b> if the ensemble is circular, <b>false</b> otherwise.
 	 */
-	boolean checkCircular(){
-		Set<Nnucleotide> vertexSet = g.vertexSet();
+	public boolean checkCircular(){
+		Set<Nnucleotide> vertexSet = graph.vertexSet();
 		for(Nnucleotide n : vertexSet){
-			//TODO Find the vertex associated to nucleotide n and see
+			Set<DefaultEdge> cibles = graph.edgesOf(n);
+			if(cibles != null){
+				for(DefaultEdge cible : cibles){
+					Nnucleotide a = graph.getEdgeTarget(cible);
+					if(a != n){
+						if(a.equals(n))
+							return true;
+						//System.out.println(n.toString() + " est attaché à " + a.toString());
+					}
+				}
+			}
 		}
-		
-		return true;
+		return false;
 	}
 }
