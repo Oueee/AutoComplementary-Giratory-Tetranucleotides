@@ -10,7 +10,8 @@ import nucleotide.Tetranucleotide;
  */
 public class Ensemble{
 	private ArrayList<Tetranucleotide> ensemble;
-	private boolean circular = false; //might be of use, some day
+	private boolean circular = false;
+	private boolean autocomplementary = false;
 	
 	public Ensemble(Tetranucleotide tetra){
 		this.ensemble = new ArrayList<Tetranucleotide>();
@@ -38,6 +39,10 @@ public class Ensemble{
 		return this.ensemble.get(0);
 	}
 	
+	public void setCircular(boolean state){
+		this.circular = state;
+	}
+	
 	//Getters...
 	public ArrayList<Tetranucleotide> getTetranucleotids(){
 		return ensemble;
@@ -45,4 +50,6 @@ public class Ensemble{
 	public int nbTetranucleotids(){
 		return ensemble.size();
 	}
+	public boolean isCircular(){return this.circular;}
+	public boolean isAutocomplementary(){return this.autocomplementary;}
 }

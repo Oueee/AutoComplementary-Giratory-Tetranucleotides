@@ -2,10 +2,9 @@ package graph;
 
 import java.util.Set;
 
-import org.jgrapht.UndirectedGraph;
-import org.jgrapht.graph.SimpleGraph;
+import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
-
+import org.jgrapht.graph.ListenableDirectedGraph;
 
 import ensemble.Ensemble;
 import nucleotide.Nnucleotide;
@@ -19,7 +18,7 @@ import nucleotide.Tetranucleotide;
  */
 public class Graph {
 	/** The graph set of one ensemble, including every n-nucleotide and its edges */
-	private UndirectedGraph<Nnucleotide, DefaultEdge> graph;
+	private DirectedGraph<Nnucleotide, DefaultEdge> graph;
 	
 	/**
 	 * Initializes the graph using the Tetranucleotides contained in <b>ensemble</b>
@@ -27,13 +26,17 @@ public class Graph {
 	 * @param ensemble The ensemble containing every Tetranucleotide to handle in the graph.
 	 */
 	public Graph(Ensemble ensemble){
-		this.graph = new SimpleGraph<Nnucleotide, DefaultEdge>(DefaultEdge.class);
-		if(ensemble.nbTetranucleotids() == 1)
+		this.graph = new ListenableDirectedGraph<Nnucleotide, DefaultEdge>(DefaultEdge.class);
+		if(ensemble.nbTetranucleotids() == 1){
 			this.buildFirst(ensemble.getFirstTetranucleotid());
-		else{
+		}else{
 			//TODO Generalize the graph build.
+			for(Tetranucleotide tetra : ensemble.getTetranucleotids()){
+				this.buildFirst(tetra);
+			}
 		}
-		//checkCircular();
+		
+		ensemble.setCircular(checkCircular());
 	}
 	
 	/**
@@ -41,6 +44,7 @@ public class Graph {
 	 * is still circular with one more Tetranucleotide.
 	 */
 	public void addVertex(){
+		
 		//TODO Add a vertex and check if the graph still doesn't find a circle
 	}
 	
@@ -54,12 +58,15 @@ public class Graph {
 	private void buildFirst(Tetranucleotide tetra){
 		//ACGT => A-CGT AC-GT ACG-T
 		for(Nnucleotide[] split : tetra.split()){
-			graph.addVertex(split[0]);
-			graph.addVertex(split[1]);
-			
-			graph.addEdge(split[0], split[1]);
+			if(! graph.containsVertex(split[0]))
+				graph.addVertex(split[0]);
+			if(! graph.containsVertex(split[1]))
+				graph.addVertex(split[1]);
+			if(! graph.containsEdge(split[0], split[1]))
+				graph.addEdge(split[0], split[1]);
 		}
 	}
+	
 	
 	/**
 	 * Checks if the graph contains any cycle
@@ -80,7 +87,6 @@ public class Graph {
 					if(a != n){
 						if(a.equals(n))
 							return true;
-						//System.out.println(n.toString() + " est attaché à " + a.toString());
 					}
 				}
 			}
