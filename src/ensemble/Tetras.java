@@ -43,7 +43,7 @@ public class Tetras {
         }
     };
 
-    public Tetranucleotides() {
+    public Tetras() {
         lst = new ArrayList<String>();
         s256 = new ArrayList<String>();
         s240 = new ArrayList<String>();
@@ -101,7 +101,7 @@ public class Tetras {
     }
 
     public static void main(String[] args) {
-        Tetranucleotides a = new Tetranucleotides();
+        Tetras a = new Tetras();
         // System.out.println(a.s16);
         // System.out.println(a.S256().size());
         // System.out.println(a.S240().size());
