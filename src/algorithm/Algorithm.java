@@ -39,6 +39,9 @@ public class Algorithm {
 										nucleotides[c].getNucleotids() +
 										nucleotides[d].getNucleotids())));
 	
+		Ensemble test = new Ensemble(new Tetranucleotide("ACGT"));
+		test.addTetranucleotid(new Tetranucleotide("CATG"));
+		
 		//Setting the starting ensembles S1 and S2
 		for(Ensemble ensemble : ensembles){
 			new Graph(ensemble);
