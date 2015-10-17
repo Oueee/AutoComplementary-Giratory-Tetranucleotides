@@ -35,7 +35,7 @@ public class Graph {
 				this.buildFirst(tetra);
 			}
 		}
-		
+		printGraph();
 		ensemble.setCircular(checkCircular());
 	}
 	
@@ -67,6 +67,18 @@ public class Graph {
 		}
 	}
 	
+	public void printGraph(){
+		Set<Nnucleotide> vertexSet = graph.vertexSet();
+		
+		for(Nnucleotide vertex : vertexSet){
+			System.out.print(vertex.getNucleotids()+"-");
+			//Set<DefaultEdge> incoming = graph.incomingEdgesOf(vertex);
+			Set<DefaultEdge> outgoing = graph.outgoingEdgesOf(vertex);
+			for(DefaultEdge edge : outgoing){
+				System.out.print(graph.getEdgeTarget(edge).getNucleotids());
+			}
+		}
+	}
 	
 	/**
 	 * Checks if the graph contains any cycle
