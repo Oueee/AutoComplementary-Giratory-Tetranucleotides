@@ -3,6 +3,7 @@ package ensemble;
 import java.util.ArrayList;
 
 import nucleotide.Tetranucleotide;
+import utils.StringFacility;
 
 /**
  * This class keeps the ensemble of {@link Tetranucleotide} we need to compute for one {@link Graph}.
@@ -11,7 +12,6 @@ import nucleotide.Tetranucleotide;
 public class Ensemble{
 	private ArrayList<Tetranucleotide> ensemble;
 	private boolean circular = false;
-	private boolean autocomplementary = false;
 	
 	public Ensemble(Tetranucleotide tetra){
 		this.ensemble = new ArrayList<Tetranucleotide>();
@@ -36,9 +36,10 @@ public class Ensemble{
 	 * @return The first {@link Tetranucleotide} of the ensemble (assuming it's the only one).
 	 */
 	public Tetranucleotide getFirstTetranucleotid(){
-		return this.ensemble.get(0);
+		return this.getTetranucleotid(0);
 	}
-	
+	public Tetranucleotide getTetranucleotid(int index){ return this.ensemble.get(index); }
+
 	public void setCircular(boolean state){
 		this.circular = state;
 	}
@@ -51,5 +52,36 @@ public class Ensemble{
 		return ensemble.size();
 	}
 	public boolean isCircular(){return this.circular;}
-	public boolean isAutocomplementary(){return this.autocomplementary;}
+
+	/**
+	 * So ugly aha, but just used at the beginning so it's kind of okay
+	 * Check if the ensemble is auto-complementary. Use to get the ensembles
+	 * at the beginning of the program.
+	 * @return true if the ensemble is auto-complementary, false otherwise
+	 */
+	public boolean isAutocomplementary(){
+		boolean result = true;
+
+		// Check for each tetra if there is the complementary in the ensemble
+		for(Tetranucleotide t : ensemble) {
+			String complementary = t.getComplementary();
+			boolean hasComplementary = false;
+			for(Tetranucleotide toTest : ensemble) {
+				if(toTest.equals(complementary)) {
+					hasComplementary = true;
+					break;
+				}
+			}
+
+			if(!hasComplementary) {
+				result = false;
+				break;
+			}
+		}
+		return result;
+	}
+
+	public String toString() {
+		return "{" + StringFacility.join(ensemble.toArray(), ", ") + "}";
+	}
 }

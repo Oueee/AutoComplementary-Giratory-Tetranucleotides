@@ -23,11 +23,17 @@ public class Algorithm {
 				new Nnucleotide("C"),
 				new Nnucleotide("G"),
 				new Nnucleotide("T")};
+
+		// All the tetranucleotides (256)
 		ArrayList<Ensemble> ensembles = new ArrayList<Ensemble>();
-		ArrayList<Ensemble> s1 = new ArrayList<Ensemble>();
-		ArrayList<Ensemble> s2 = new ArrayList<Ensemble>();
+
+		//The 12 auto-complementary tetranucleotides
+		ArrayList<Ensemble> s12 = new ArrayList<Ensemble>();
+
+		//The 114 pair-complementary without circle
+		ArrayList<Ensemble> s114 = new ArrayList<Ensemble>();
 		
-		ArrayList<Tetranucleotide> tetraList = new ArrayList<Tetranucleotide>();
+		//ArrayList<Tetranucleotide> tetraList = new ArrayList<Tetranucleotide>();
 		for(int a=0 ; a< 4;a++)
 			for(int b=0 ; b< 4;b++)
 				for(int c=0 ; c< 4;c++)
@@ -39,21 +45,44 @@ public class Algorithm {
 										nucleotides[c].getNucleotids() +
 										nucleotides[d].getNucleotids())));
 	
-		Ensemble test = new Ensemble(new Tetranucleotide("ACGT"));
-		test.addTetranucleotid(new Tetranucleotide("CATG"));
+		Ensemble test = new Ensemble(ensembles.get(10).getFirstTetranucleotid());
+		test.addTetranucleotid(ensembles.get(10).getFirstTetranucleotid()); // to check the warning -> OK
 		
 		//Setting the starting ensembles S1 and S2
 		for(Ensemble ensemble : ensembles){
-			new Graph(ensemble);
+			new Graph(ensemble); // to check if the ensemble is circular
 			if( ! ensemble.isCircular() ){
 				if(ensemble.isAutocomplementary())
-					s1.add(ensemble);
-				else
-					s2.add(ensemble);
+					s12.add(ensemble);
+				else {
+					String complementary = ensemble.getFirstTetranucleotid().getComplementary();
+					boolean compIsIn = false;
+					for(Ensemble toTest : s114) {
+						if(toTest.getFirstTetranucleotid().equals(complementary)) {
+							compIsIn = true;
+							break;
+						}
+					}
+					if(!compIsIn)
+						s114.add(ensemble);
+				}
+
 			}
 		}
-		
-		
-		
+
+		if(ensembles.size() != 256) {
+			System.err.println("There isn't the good amount of tetranucleotides (" + ensembles.size() + "!=256)");
+			System.exit(1);
+		}
+
+		if(s12.size() != 12) {
+			System.err.println("There isn't the good amount of auto-complementary tetranucleotides (" + s12.size() + "!=12)");
+			System.exit(1);
+		}
+
+		if(s114.size() != 114) {
+			System.err.println("There isn't the good amount of pair-complementary tetranucleotides (" + s114.size() + "!=114)");
+			System.exit(1);
+		}
 	}
 }

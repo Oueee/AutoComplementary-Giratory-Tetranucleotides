@@ -27,15 +27,10 @@ public class Graph {
 	 */
 	public Graph(Ensemble ensemble){
 		this.graph = new ListenableDirectedGraph<Nnucleotide, DefaultEdge>(DefaultEdge.class);
-		if(ensemble.nbTetranucleotids() == 1){
-			this.buildFirst(ensemble.getFirstTetranucleotid());
-		}else{
-			//TODO Generalize the graph build.
-			for(Tetranucleotide tetra : ensemble.getTetranucleotids()){
-				this.buildFirst(tetra);
-			}
-		}
-		printGraph();
+
+		for(Tetranucleotide tetra : ensemble.getTetranucleotids())
+			this.addTetranucleotide(tetra);
+
 		ensemble.setCircular(checkCircular());
 	}
 	
@@ -55,7 +50,7 @@ public class Graph {
 	 * </p>
 	 * @param tetra The tetranucleotide that will be split in 6 n-nucleotides
 	 */
-	private void buildFirst(Tetranucleotide tetra){
+	private void addTetranucleotide(Tetranucleotide tetra){
 		//ACGT => A-CGT AC-GT ACG-T
 		for(Nnucleotide[] split : tetra.split()){
 			if(! graph.containsVertex(split[0]))

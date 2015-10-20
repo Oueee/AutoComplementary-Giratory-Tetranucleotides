@@ -35,7 +35,8 @@ public class Nnucleotide {
 	 * @return
 	 */
 	public String getNucleotids(){return this.nucleotids;}
-	public boolean equals(Nnucleotide n){return this.nucleotids.equals(n.nucleotids);}
+	public boolean equals(Nnucleotide n){return this.equals(n.nucleotids);}
+	public boolean equals(String s){return this.nucleotids.equals(s);}
 	public String toString(){return this.nucleotids;}
 	public String nComplementary(char c){
 		switch (c) {
@@ -45,5 +46,14 @@ public class Nnucleotide {
 			case 'T' : return "A";
 		}
 		return null;
+	}
+
+	public String getComplementary(){
+		String result = "";
+
+		for(int i = this.nbNucleotids-1; i >= 0; i--)
+			result += nComplementary(this.nucleotids.charAt(i));
+
+		return result;
 	}
 }

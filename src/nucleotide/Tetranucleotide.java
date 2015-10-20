@@ -10,8 +10,7 @@ import java.util.ArrayList;
  *
  */
 public class Tetranucleotide extends Nnucleotide {
-	String complementary;
-	
+
 	/**
 	 * Creates a Tetranucleotide as if it where a regular {@link Nnucleotide}.<br>
 	 * It checks if it has the right amount of nucleotides and crashes the program if not (you might want to remove that part, though).
@@ -20,10 +19,9 @@ public class Tetranucleotide extends Nnucleotide {
 	public Tetranucleotide(String tetra){
 		super(tetra);
 		if(nbNucleotids != 4){
-			System.err.println("Error : Tetranucleotid "+tetra+ " has less than 4 nucleotids.");
+			System.err.println("Error : Tetranucleotid "+tetra+ " has less or more than 4 nucleotids.");
 			System.exit(-1);
 		}
-		this.complementary = "";
 	}
 	
 	/**
@@ -37,15 +35,9 @@ public class Tetranucleotide extends Nnucleotide {
 			Nnucleotide[] splited = new Nnucleotide[2];
 			splited[0] = new Nnucleotide(this.nucleotids.substring(0, i));
 			splited[1] = new Nnucleotide(this.nucleotids.substring(i, 4));
-			System.out.println(splited[0] + "-" + splited[1]);
 			splitList.add(splited);
 		}
 		
 		return splitList;
-	}
-	
-	public String getComplementary(){
-		return super.nComplementary(this.nucleotids.charAt(0)) + nComplementary(this.nucleotids.charAt(1))
-			+ nComplementary(this.nucleotids.charAt(2)) + nComplementary(this.nucleotids.charAt(3));
 	}
 }
