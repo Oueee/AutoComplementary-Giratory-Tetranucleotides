@@ -18,36 +18,38 @@ public class Algorithm {
 	 * Feel free to change this if you have a better idea, there's not much anyway.
 	 * @param args Thank you Java for letting us drop this argument.
 	 */
-	public static void main(String[] args){
+
+	public static ArrayList<Ensemble> s12;
+	public static ArrayList<Ensemble> s114;
+	public static ArrayList<Ensemble> ensembles;
+
+	public static void ensemblesInit() {
 		Nnucleotide[] nucleotides = new Nnucleotide[]{new Nnucleotide("A"),
 				new Nnucleotide("C"),
 				new Nnucleotide("G"),
 				new Nnucleotide("T")};
 
 		// All the tetranucleotides (256)
-		ArrayList<Ensemble> ensembles = new ArrayList<Ensemble>();
+		ensembles = new ArrayList<Ensemble>();
 
 		//The 12 auto-complementary tetranucleotides
-		ArrayList<Ensemble> s12 = new ArrayList<Ensemble>();
+		s12 = new ArrayList<Ensemble>();
 
 		//The 114 pair-complementary without circle
-		ArrayList<Ensemble> s114 = new ArrayList<Ensemble>();
-		
+		s114 = new ArrayList<Ensemble>();
+
 		//ArrayList<Tetranucleotide> tetraList = new ArrayList<Tetranucleotide>();
 		for(int a=0 ; a< 4;a++)
 			for(int b=0 ; b< 4;b++)
 				for(int c=0 ; c< 4;c++)
 					for(int d=0 ; d< 4;d++)
 						ensembles.add(new Ensemble(
-								new Tetranucleotide(
-										nucleotides[a].getNucleotids() +
-										nucleotides[b].getNucleotids() +
-										nucleotides[c].getNucleotids() +
-										nucleotides[d].getNucleotids())));
-	
-		Ensemble test = new Ensemble(ensembles.get(10).getFirstTetranucleotid());
-		test.addTetranucleotid(ensembles.get(10).getFirstTetranucleotid()); // to check the warning -> OK
-		
+							new Tetranucleotide(
+								nucleotides[a].getNucleotids() +
+								nucleotides[b].getNucleotids() +
+								nucleotides[c].getNucleotids() +
+								nucleotides[d].getNucleotids())));
+
 		//Setting the starting ensembles S1 and S2
 		for(Ensemble ensemble : ensembles){
 			new Graph(ensemble); // to check if the ensemble is circular
@@ -69,7 +71,18 @@ public class Algorithm {
 
 			}
 		}
+	}
 
+	/**
+	 * Very bad way to do unit testing...
+	 */
+	public static void someChecks() {
+		System.out.println("Must have a warning ->");
+		System.out.flush();
+		Ensemble test = new Ensemble(ensembles.get(10).getFirstTetranucleotid());
+		test.addTetranucleotid(ensembles.get(10).getFirstTetranucleotid());
+
+		// Check if the ensembles are well formed
 		if(ensembles.size() != 256) {
 			System.err.println("There isn't the good amount of tetranucleotides (" + ensembles.size() + "!=256)");
 			System.exit(1);
@@ -84,5 +97,10 @@ public class Algorithm {
 			System.err.println("There isn't the good amount of pair-complementary tetranucleotides (" + s114.size() + "!=114)");
 			System.exit(1);
 		}
+	}
+
+	public static void main(String[] args){
+		ensemblesInit();
+		someChecks();
 	}
 }
