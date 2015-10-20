@@ -1,0 +1,6 @@
+# idea editor
+.idea/
+*.iml
+
+# object files
+*.class
