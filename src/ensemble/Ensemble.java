@@ -9,10 +9,16 @@ import utils.StringFacility;
  * This class keeps the ensemble of {@link Tetranucleotide} we need to compute for one {@link Graph}.
  * @author Alexandre
  */
+
+
 public class Ensemble{
 	private ArrayList<Tetranucleotide> ensemble;
 	private boolean circular = false;
-	
+
+	public Ensemble(){
+		this.ensemble = new ArrayList<Tetranucleotide>();
+	}
+
 	public Ensemble(Tetranucleotide tetra){
 		this.ensemble = new ArrayList<Tetranucleotide>();
 		this.ensemble.add(tetra);

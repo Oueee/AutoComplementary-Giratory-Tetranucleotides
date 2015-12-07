@@ -4,11 +4,6 @@ package ensemble;
  * Created by liuxiaoyi on 15/10/15.
  */
 import nucleotide.Tetranucleotide;
-
-
-
-import nucleotide.Tetranucleotide;
-
 import java.util.ArrayList;
 
 public class Tetras {
