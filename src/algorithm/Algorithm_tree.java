@@ -125,11 +125,11 @@ public class Algorithm_tree {
             root.addLeft(key, null);
 
         Graph g;
-        /*for(Tetranucleotide key : this.dicoS114.keySet()) {
+        for(Tetranucleotide key : this.dicoS114.keySet()) {
             g = Graph.createGraph(new Node(null, key));
             if(g.isCircular())
                 root.addRight(key, null);
-        }*/
+        }
 
 
         ArrayList<Node> rootList = new ArrayList<>();
@@ -139,8 +139,7 @@ public class Algorithm_tree {
         rootBuffer.append(rootList);
 
         A2Buffer = rootBuffer.borderCombination(this.dicoS12, BufferResults.BorderSide.LEFT);
-        A2Buffer = rootBuffer.borderCombination(this.dicoS12, BufferResults.BorderSide.LEFT);
-        System.out.println(A2Buffer.count());
+        System.out.println(A2Buffer.count() + root.getRightSon().size());
 
         /*for (int i = 2; i < 60; i++) {
 
