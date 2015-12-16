@@ -1,12 +1,17 @@
 package core;
 
 import algorithm.Algorithm;
+import algorithm.Algorithm_tree;
 import ensemble.Ensemble;
 import graph.Graph;
+import graph.Node;
 import nucleotide.Nnucleotide;
 import nucleotide.Tetranucleotide;
+import org.jgrapht.DirectedGraph;
+import org.jgrapht.graph.DefaultDirectedGraph;
+import org.jgrapht.graph.DefaultEdge;
 
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * Created by rinku on 10/20/15.
@@ -15,6 +20,9 @@ public class Main {
     public static ArrayList<Ensemble> s12;
     public static ArrayList<Ensemble> s114;
     public static ArrayList<Ensemble> ensembles;
+
+    public static HashMap<Tetranucleotide, Set<Tetranucleotide>> dicoS12;
+    public static HashMap<Tetranucleotide, Set<Tetranucleotide>> dicoS114;
 
     /**
      * Create the ensembles used by the algorithm
@@ -49,7 +57,7 @@ public class Main {
         //Setting the starting ensembles S1 and S2
         for(Ensemble ensemble : ensembles){
             new Graph(ensemble); // to check if the ensemble is circular
-            if( ! ensemble.isCircular() ){
+            if( ensemble.isCircular() ){
                 if(ensemble.isAutocomplementary())
                     s12.add(ensemble);
                 else {
@@ -61,12 +69,37 @@ public class Main {
                             break;
                         }
                     }
-                    if(!compIsIn)
+                    if(!compIsIn) {
+                        for(Tetranucleotide t : ensemble.getTetranucleotids())
+                            t.setAutoComplementary(false);
+
                         s114.add(ensemble);
+                    }
+
                 }
 
             }
         }
+    }
+
+    public static void init(ArrayList<Ensemble> ens,
+                     HashMap<Tetranucleotide, Set<Tetranucleotide>> dico) {
+        int size = ens.size();
+        for (int i = 0; i < size; i++) {
+            Set<Tetranucleotide> dep = new HashSet<Tetranucleotide>();
+            for (int j = i+1; j < size; j++)
+                dep.add(ens.get(j).getFirstTetranucleotid());
+
+            dico.put(ens.get(i).getFirstTetranucleotid(), dep);
+        }
+    }
+
+    public static void nodesInit() {
+        dicoS12 = new HashMap<Tetranucleotide, Set<Tetranucleotide>>();
+        dicoS114 = new HashMap<Tetranucleotide, Set<Tetranucleotide>>();
+
+        init(s12, dicoS12);
+        init(s114, dicoS114);
     }
 
     /**
@@ -93,13 +126,40 @@ public class Main {
             System.err.println("There isn't the good amount of pair-complementary tetranucleotides (" + s114.size() + "!=114)");
             System.exit(1);
         }
+
+        Tetranucleotide ft = new Tetranucleotide("AAAA");
+        Tetranucleotide st = new Tetranucleotide("AAAB");
+        Tetranucleotide ft2 = new Tetranucleotide("AAAA");
+
+        if(ft.comp(st) >= 0 || st.comp(ft) <= 0 || ft.comp(ft2) != 0) {
+            System.err.println("The comparison between two tetranucleotides isn't good");
+            System.exit(1);
+        }
+
+        Graph g = new Graph();
+        g.addTetranucleotide(new Tetranucleotide("ATAT"));
+
+        if(g.isCircular()) {
+            System.err.println("Didn't detect a circle of one (AT<->AT)");
+            System.exit(1);
+        }
+
+        g = new Graph();
+        g.addTetranucleotide(new Tetranucleotide("ACGT"));
+        g.addTetranucleotide(new Tetranucleotide("CGTA"));
+
+        if(g.isCircular()) {
+            System.err.println("Didn't detect a circle of two (A<->CGT)");
+            System.exit(1);
+        }
     }
 
     public static void main(String[] args){
         ensemblesInit();
+        nodesInit();
         someChecks();
 
-        Algorithm algorithmBase = new Algorithm(s12, s114);
-        algorithmBase.run();
+        Algorithm_tree algo = new Algorithm_tree(dicoS12, dicoS114);
+        algo.run();
     }
 }
