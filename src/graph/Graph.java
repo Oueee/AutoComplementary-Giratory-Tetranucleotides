@@ -68,6 +68,12 @@ public class Graph {
     }
 
     public void addWithHistory(Tetranucleotide tetra){
+        this.addWithHistoryAux(tetra);
+        if(!tetra.isAutoComplementary())
+            this.addWithHistoryAux(tetra.getTetraComplementary());
+    }
+
+    public void addWithHistoryAux(Tetranucleotide tetra){
         //ACGT => A-CGT AC-GT ACG-T
         String n1;
         String n2;
@@ -97,6 +103,12 @@ public class Graph {
      * @param tetra The tetranucleotide that will be split in 6 n-nucleotides
      */
     public void addTetranucleotide(Tetranucleotide tetra){
+        this.addTetranucleotideAux(tetra);
+        if(!tetra.isAutoComplementary())
+            this.addTetranucleotideAux(tetra.getTetraComplementary());
+    }
+
+    public void addTetranucleotideAux(Tetranucleotide tetra){
         //ACGT => A-CGT AC-GT ACG-T
         for(String[] split : tetra.split()){
             if(! graph.containsVertex(split[0]))

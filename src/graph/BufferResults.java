@@ -16,7 +16,7 @@ import nucleotide.Tetranucleotide;
  */
 
 public class BufferResults {
-    private ArrayList<ArrayList<Node>> buffer;
+    /*private ArrayList<ArrayList<Node>> buffer;
 
     public static enum BorderSide {LEFT, RIGHT};
 
@@ -102,7 +102,7 @@ public class BufferResults {
     private BufferResults rightBorderCombinationAux(HashMap<Tetranucleotide, Set<Tetranucleotide>> dico,
                                                     ArrayList<Node> ar) {
 
-        BufferResults result = new BufferResults();
+        ArrayList<Node> result = new ArrayList<Node>();
         Set<Tetranucleotide> grandChildren;
 
         for(Node n : ar) {
@@ -120,11 +120,13 @@ public class BufferResults {
                 }
 
                 if(!fd.getRightSon().isEmpty())
-                    result.append(fd.getRightSon());
+                    result.add(fd);
             }
         }
 
-        return result;
+        BufferResults r = new BufferResults();
+        r.append(result);
+        return r;
     }
 
     public BufferResults borderCombination(HashMap<Tetranucleotide, Set<Tetranucleotide>> dico, BorderSide side) {
@@ -160,5 +162,5 @@ public class BufferResults {
             result += ar.size();
 
         return result;
-    }
+    }*/
 }

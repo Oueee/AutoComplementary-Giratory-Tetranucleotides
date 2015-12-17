@@ -2,6 +2,7 @@ package core;
 
 import algorithm.Algorithm;
 import algorithm.Algorithm_tree;
+import algorithm.Case;
 import ensemble.Ensemble;
 import graph.Graph;
 import graph.Node;
@@ -152,12 +153,34 @@ public class Main {
             System.err.println("Didn't detect a circle of two (A<->CGT)");
             System.exit(1);
         }
+
+        Node a1 = new Node(new Tetranucleotide("ACGT"));
+        Node a2 = new Node(new Tetranucleotide("ACCC"));
+        Node b1 = new Node(new Tetranucleotide("CGTA"));
+        Node b2 = new Node(new Tetranucleotide("GTTT"));
+        graph.Ensemble a = new graph.Ensemble();
+        a.add(a1);
+        a.add(a2);
+
+        graph.Ensemble b = new graph.Ensemble();
+        b.add(b1);
+        b.add(b2);
+
+        Node root = new Node(new Tetranucleotide("AAAA"));
+        root.addA(new Tetranucleotide("ACGT"), null);
+        root.addA(new Tetranucleotide("ACCC"), null);
+        root.addB(new Tetranucleotide("CGTA"), null);
+        root.addB(new Tetranucleotide("GTTT"), null);
+
+/*        Case c = new Case(root);
+        c.combinate();
+        System.out.println(c.count());*/
     }
 
     public static void main(String[] args){
         ensemblesInit();
         nodesInit();
-        someChecks();
+        //someChecks();
 
         Algorithm_tree algo = new Algorithm_tree(dicoS12, dicoS114);
         algo.run();

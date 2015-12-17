@@ -9,21 +9,21 @@ import java.util.concurrent.Callable;
 
 public class Node {
     Tetranucleotide tetra;
-    ArrayList<Node> leftSon;
-    ArrayList<Node> rightSon;
+    Ensemble ACombination;
+    Ensemble BCombination;
     Node parent;
 
     public Node(Node parent, Tetranucleotide tetra) {
         this.tetra = tetra;
-        leftSon = new ArrayList<>();
-        rightSon = new ArrayList<>();
+        ACombination = new Ensemble();
+        BCombination = new Ensemble();
         this.parent = parent;
     }
 
     public Node(Tetranucleotide tetra) {
         this.tetra = tetra;
-        leftSon = new ArrayList<>();
-        rightSon = new ArrayList<>();
+        ACombination = new Ensemble();
+        BCombination = new Ensemble();
         this.parent = null;
     }
 
@@ -35,24 +35,24 @@ public class Node {
         return parent;
     }
 
-    public void addLeft(Tetranucleotide t) {
-        leftSon.add(new Node(this, t));
+    public void addA(Tetranucleotide t) {
+        ACombination.add(new Node(this, t));
     }
 
-    public void addRight(Tetranucleotide t) {
-        rightSon.add(new Node(this, t));
+    public void addB(Tetranucleotide t) {
+        BCombination.add(new Node(this, t));
     }
 
-    public void addLeft(Tetranucleotide t, Node n) {
-        leftSon.add(new Node(n, t));
+    public void addA(Tetranucleotide t, Node n) {
+        ACombination.add(new Node(n, t));
     }
 
-    public void addRight(Tetranucleotide t, Node n) {
-        rightSon.add(new Node(n, t));
+    public void addB(Tetranucleotide t, Node n) {
+        BCombination.add(new Node(n, t));
     }
 
-    public ArrayList<Node> getLeftSon() { return leftSon; }
+    public Ensemble getASon() { return ACombination; }
 
-    public ArrayList<Node> getRightSon() { return rightSon; }
+    public Ensemble getBSon() { return BCombination; }
 }
 
