@@ -39,7 +39,6 @@ public class Algorithm_tree {
                 root.addB(key, null);
         }
 
-        Case caseRoot = new Case(root, Case.TypeCase.ABBorder);
         Case caseA = new Case(root.getASon(), Case.TypeCase.ABorder);
         Case caseB = new Case(root.getBSon(), Case.TypeCase.BBorder);
 
@@ -50,9 +49,6 @@ public class Algorithm_tree {
         result[1] = caseA.count();
         result[2] = caseB.count();
 
-        Diagonal first = new Diagonal(result);
-        first.add(caseRoot);
-
         Diagonal second = new Diagonal(result);
         second.add(caseA);
         second.add(caseB);
@@ -60,9 +56,7 @@ public class Algorithm_tree {
         Diagonal temp;
         int limit = 6;
         for (int i = 1; i < limit; i++) {
-            temp = first.compute(limit);
-            first = second;
-            second = temp;
+            second = second.compute(limit);
         }
 
         for (int i = 0; i <= limit; i++)

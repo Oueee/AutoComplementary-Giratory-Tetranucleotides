@@ -65,14 +65,6 @@ public class Case {
         return new Case(results, t);
     }
 
-    public Case combinate() {
-        ArrayList<Ensemble> results = new ArrayList<Ensemble>();
-
-        for(Ensemble ens : ensembles)
-            results.addAll(combinateAux(ens));
-
-        return new Case(results, TypeCase.In);
-    }
 
     public int count() {
         int result = 0;
@@ -101,22 +93,22 @@ public class Case {
         Set<Tetranucleotide> grandChildren;
 
         for(Node n : e.getNodes()) {
-            for(Node aChild : n.getASon().getNodes()) {
-                grandChildren = dico.get(aChild.getTetra());
-                Graph g = Graph.createGraph(aChild);
+            grandChildren = dico.get(n.getTetra());
+            if(grandChildren == null)
+                grandChildren = dico.keySet();
+            Graph g = Graph.createGraph(n);
 
-                for(Tetranucleotide grandChild: grandChildren) {
-                    g.addWithHistory(grandChild);
+            for(Tetranucleotide grandChild: grandChildren) {
+                g.addWithHistory(grandChild);
 
-                    if(g.isCircular())
-                        aChild.addA(grandChild);
+                if(g.isCircular())
+                    n.addA(grandChild);
 
-                    g.reset();
-                }
-
-                if(!aChild.getASon().isEmpty())
-                    result.add(aChild.getASon());
+                g.reset();
             }
+
+            if(!n.getASon().isEmpty())
+                result.add(n.getASon());
         }
 
         return result;
@@ -129,22 +121,23 @@ public class Case {
         Set<Tetranucleotide> grandChildren;
 
         for(Node n : e.getNodes()) {
-            for(Node bChild : n.getBSon().getNodes()) {
-                grandChildren = dico.get(bChild.getTetra());
-                Graph g = Graph.createGraph(bChild);
+            grandChildren = dico.get(n.getTetra());
+            if(grandChildren == null)
+                grandChildren = dico.keySet();
 
-                for(Tetranucleotide grandChild: grandChildren) {
-                    g.addWithHistory(grandChild);
+            Graph g = Graph.createGraph(n);
 
-                    if(g.isCircular())
-                        bChild.addB(grandChild);
+            for(Tetranucleotide grandChild: grandChildren) {
+                g.addWithHistory(grandChild);
 
-                    g.reset();
-                }
+                if(g.isCircular())
+                    n.addB(grandChild);
 
-                if(!bChild.getBSon().isEmpty())
-                    result.add(bChild.getBSon());
+                g.reset();
             }
+
+            if(!n.getBSon().isEmpty())
+                result.add(n.getBSon());
         }
 
         return result;
@@ -156,30 +149,6 @@ public class Case {
      * Just keep in the tree {T,A,B} and not {T,B,A}
      * Don't mind for the next calcul because of the case abstraction ;)
      */
-    private ArrayList<Ensemble> combinateAux(Ensemble ens) {
-        ArrayList<Ensemble> result = new ArrayList<Ensemble>();
 
-        for(Node n : ens.getNodes()) {
-            for(Node aChild : n.getASon().getNodes()) {
-                Graph g = Graph.createGraph(aChild);
-
-                for(Node bChild : n.getBSon().getNodes()) {
-                    g.addWithHistory(bChild.getTetra());
-
-                    if(g.isCircular()) {
-                        aChild.addB(bChild.getTetra());
-                        //bChild.addA(aChild.getTetra());
-                    }
-
-                    g.reset();
-                }
-
-                if(!aChild.getBSon().isEmpty())
-                    result.add(aChild.getBSon());
-            }
-        }
-
-        return result;
-    }
 
 }

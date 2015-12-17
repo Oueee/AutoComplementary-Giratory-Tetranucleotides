@@ -26,19 +26,19 @@ public class Diagonal {
         int idToCalculate = id + 2;
 
         newCase = cases.get(0).addEnsemble(Algorithm_tree.dicoS12, Case.TypeCase.ABorder);
-        results[idToCalculate] += newCase.count();
+        int number = newCase.count();
+
+        results[idToCalculate] += number;
         result.add(newCase);
-
         for (int i = 0; i < size && idToCalculate + i + 1 <= limit; i++) {
-            if(idToCalculate + i + 1 == 6)
-                System.out.println("Combo");
-
-            newCase = cases.get(i).combinate();
+            newCase = cases.get(i).addEnsemble(Algorithm_tree.dicoS114, Case.TypeCase.BBorder);
             results[idToCalculate + i + 1] += newCase.count();
-
-
             result.add(newCase);
         }
+
+
+        /*r
+
 
         if(idToCalculate + size + 1 <= limit) {
             if(idToCalculate + size + 1 == 6)
@@ -46,7 +46,7 @@ public class Diagonal {
             newCase = cases.get(size-1).addEnsemble(Algorithm_tree.dicoS114, Case.TypeCase.BBorder);
             results[idToCalculate + size + 1] += newCase.count();
             result.add(newCase);
-        }
+        }*/
 
         return result;
     }
