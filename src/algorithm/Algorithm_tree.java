@@ -29,11 +29,12 @@ public class Algorithm_tree {
     private String getInterval(long d1, long d2) {
         //in milliseconds
         long diff = d2 - d1;
-        long diffSeconds = diff;
+        long diffMilliSeconds = diff % 1000;
+        long diffSeconds = diff / 1000 % 60;
         long diffMinutes = diff / (60 * 1000) % 60;
         long diffHours = diff / (60 * 60 * 1000) % 24;
 
-        String result = diffHours + ":" + diffMinutes + ":" + diffSeconds;
+        String result = diffHours + ":" + diffMinutes + ":" + diffSeconds + "," + diffMilliSeconds;
         if(diffSeconds <= 999)
             result += "\t";
 
@@ -48,7 +49,7 @@ public class Algorithm_tree {
         int cores = Runtime.getRuntime().availableProcessors();
         //System.out.println("Votre machine a " + cores + " cpu(s).");
         //System.out.println("Un même nombre de threads vas être utilisé pour être optimal.\n");
-        System.out.println("l\ttime\t\tresult");
+        System.out.println("l\ttime (heures:minutes:secondes,millisecondes)\tresult");
         System.out.println("");
 
         // Calculate A (l = 1)
@@ -81,7 +82,7 @@ public class Algorithm_tree {
         buffer.add(caseB);
         buffer.add(caseA2);
 
-        int limit = 5;
+        int limit = 10;
         for (int i = 2; i < limit; i++) {
             pick = System.currentTimeMillis();
             bufferTemp = buffer.compute();
