@@ -11,7 +11,7 @@ import nucleotide.Tetranucleotide;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
-import java.util.concurrent.Callable;
+
 
 import java.util.Date;
 /**
@@ -45,6 +45,9 @@ public class Algorithm_tree {
         long pick;
         String time;
 
+        int cores = Runtime.getRuntime().availableProcessors();
+        //System.out.println("Votre machine a " + cores + " cpu(s).");
+        //System.out.println("Un même nombre de threads vas être utilisé pour être optimal.\n");
         System.out.println("l\ttime\t\tresult");
         System.out.println("");
 
