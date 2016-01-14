@@ -7,12 +7,14 @@ import java.util.ArrayList;
  */
 public class Diagonal {
     static private int nbObject = 3;
-    private int id;
+    public int id;
+    public long nbCIrcular;
     public ArrayList<Case> cases;
 
     public Diagonal() {
         id = nbObject++;
         cases = new ArrayList<Case>();
+        nbCIrcular = 0;
     }
 
     public void add(Case c) { cases.add(c); }
@@ -21,7 +23,6 @@ public class Diagonal {
         Diagonal nextBuffer = new Diagonal();
         Case newCase;
         int size = cases.size();
-        int nbCIrcular = 0;
 
         if(id % 2 == 0) {
             newCase = cases.get(0).addEnsemble(Algorithm_tree.dicoS114, Case.TypeCase.BBorder);
@@ -36,8 +37,6 @@ public class Diagonal {
             nbCIrcular += newCase.count();
             nextBuffer.add(newCase);
         }
-
-        System.out.println(id + " : " + nbCIrcular);
 
         return nextBuffer;
     }
