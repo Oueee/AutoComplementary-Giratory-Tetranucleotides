@@ -43,7 +43,7 @@ public class Algorithm_tree {
         Date pick;
         String time;
 
-        System.out.println("l\tresult\ttime");
+        System.out.println("l\ttime\tresult");
         System.out.println("");
 
         // Calculate A (l = 1)
@@ -52,7 +52,7 @@ public class Algorithm_tree {
             root.addA(key, null);
         Case caseA = new Case(root.getASon(), Case.TypeCase.ABorder);
         time = getInterval(pick, new Date());
-        System.out.println(1 + "\t" + caseA.count() + "\t\t" + time);
+        System.out.println(1 + "\t" + time + "\t" + caseA.count());
 
         // Calculate B and A2 (l = 2)
         pick = new Date();
@@ -67,7 +67,7 @@ public class Algorithm_tree {
         Case caseA2 = caseA.addEnsemble(Algorithm_tree.dicoS12, Case.TypeCase.ABorder);
 
         time = getInterval(pick, new Date());
-        System.out.println(2 + "\t" + (caseA2.count() + caseB.count()) + "\t\t0:0:0");
+        System.out.println(2 + "\t" + time + "\t" + (caseA2.count() + caseB.count()));
 
 
         // Calculate l = i until i == limit
@@ -82,7 +82,7 @@ public class Algorithm_tree {
             bufferTemp = buffer.compute();
             time = getInterval(pick, new Date());
 
-            System.out.println(buffer.id + "\t" + buffer.nbCIrcular + "\t" + time);
+            System.out.println(buffer.id + "\t" + time + "\t" + buffer.nbCIrcular);
 
             buffer = bufferTemp;
         }
