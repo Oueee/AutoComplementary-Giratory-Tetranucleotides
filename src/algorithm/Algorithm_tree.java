@@ -41,25 +41,17 @@ public class Algorithm_tree {
 
         Case caseA = new Case(root.getASon(), Case.TypeCase.ABorder);
         Case caseB = new Case(root.getBSon(), Case.TypeCase.BBorder);
+        Case caseA2 = caseA.addEnsemble(Algorithm_tree.dicoS12, Case.TypeCase.ABorder);
 
-        int result[] = new int[61];
-        for (int i = 0; i < 61; i++)
-            result[i] = 0;
+        System.out.println(1 + " : " + caseA.count());
+        System.out.println(2 + " : " + (caseA2.count() + caseB.count()));
+        
+        Diagonal buffer = new Diagonal();
+        buffer.add(caseB);
+        buffer.add(caseA2);
 
-        result[1] = caseA.count();
-        result[2] = caseB.count();
-
-        Diagonal second = new Diagonal(result);
-        second.add(caseA);
-        second.add(caseB);
-
-        Diagonal temp;
-        int limit = 6;
-        for (int i = 1; i < limit; i++) {
-            second = second.compute(limit);
-        }
-
-        for (int i = 0; i <= limit; i++)
-            System.out.println(i + " : " + result[i]);
+        int limit = 5;
+        for (int i = 2; i < limit; i++)
+            buffer = buffer.compute();
     }
 }
