@@ -26,36 +26,38 @@ public class Algorithm_tree {
         this.dicoS114 = dicoS114;
     }
 
-    private String getInterval(Date d1, Date d2) {
+    private String getInterval(long d1, long d2) {
         //in milliseconds
-        long diff = d2.getTime() - d1.getTime();
-
-        long diffSeconds = diff / 1000 % 60;
+        long diff = d2 - d1;
+        long diffSeconds = diff;
         long diffMinutes = diff / (60 * 1000) % 60;
         long diffHours = diff / (60 * 60 * 1000) % 24;
-        long diffDays = diff / (24 * 60 * 60 * 1000);
 
-        return diffHours + ":" + diffMinutes + ":" + diffSeconds;
+        String result = diffHours + ":" + diffMinutes + ":" + diffSeconds;
+        if(diffSeconds <= 999)
+            result += "\t";
+
+        return result;
     }
 
     public void run() {
         Node root = new Node(new Tetranucleotide("AAAA"));
-        Date pick;
+        long pick;
         String time;
 
-        System.out.println("l\ttime\tresult");
+        System.out.println("l\ttime\t\tresult");
         System.out.println("");
 
         // Calculate A (l = 1)
-        pick = new Date();
+        pick = System.currentTimeMillis();
         for(Tetranucleotide key : this.dicoS12.keySet())
             root.addA(key, null);
         Case caseA = new Case(root.getASon(), Case.TypeCase.ABorder);
-        time = getInterval(pick, new Date());
+        time = getInterval(pick, System.currentTimeMillis());
         System.out.println(1 + "\t" + time + "\t" + caseA.count());
 
         // Calculate B and A2 (l = 2)
-        pick = new Date();
+        pick = System.currentTimeMillis();
         Graph g;
         for(Tetranucleotide key : this.dicoS114.keySet()) {
             g = Graph.createGraph(new Node(null, key));
@@ -66,7 +68,7 @@ public class Algorithm_tree {
         Case caseB = new Case(root.getBSon(), Case.TypeCase.BBorder);
         Case caseA2 = caseA.addEnsemble(Algorithm_tree.dicoS12, Case.TypeCase.ABorder);
 
-        time = getInterval(pick, new Date());
+        time = getInterval(pick, System.currentTimeMillis());
         System.out.println(2 + "\t" + time + "\t" + (caseA2.count() + caseB.count()));
 
 
@@ -78,9 +80,9 @@ public class Algorithm_tree {
 
         int limit = 5;
         for (int i = 2; i < limit; i++) {
-            pick = new Date();
+            pick = System.currentTimeMillis();
             bufferTemp = buffer.compute();
-            time = getInterval(pick, new Date());
+            time = getInterval(pick, System.currentTimeMillis());
 
             System.out.println(buffer.id + "\t" + time + "\t" + buffer.nbCIrcular);
 
