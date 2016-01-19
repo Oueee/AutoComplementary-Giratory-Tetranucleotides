@@ -8,6 +8,7 @@ import graph.Node;
 
 import nucleotide.Tetranucleotide;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
@@ -20,6 +21,7 @@ import java.util.Date;
 public class Algorithm_tree {
     public static HashMap<Tetranucleotide, Set<Tetranucleotide>> dicoS12;
     public static HashMap<Tetranucleotide, Set<Tetranucleotide>> dicoS114;
+    private TextArea console;
 
     public Algorithm_tree(HashMap dicoS12, HashMap dicoS114) {
         this.dicoS12 = dicoS12;
@@ -34,14 +36,25 @@ public class Algorithm_tree {
         long diffMinutes = diff / (60 * 1000) % 60;
         long diffHours = diff / (60 * 60 * 1000) % 24;
 
-        String result = diffHours + ":" + diffMinutes + ":" + diffSeconds + "," + diffMilliSeconds;
+        String result = diffHours + ":" + diffMinutes + ":" + diffSeconds + "." + diffMilliSeconds;
         if(diffSeconds <= 999)
             result += "\t";
 
         return result;
     }
 
-    public void run() {
+    public void write(String message) {
+        console.setText(console.getText() + message + "\n");
+        System.out.println(message);
+    }
+
+    public void addLine(int id, String time, long result) {
+        write(id + "\t" + time + "\t" + result);
+    }
+
+    public void run(TextArea console) {
+        this.console = console;
+
         Node root = new Node(new Tetranucleotide("AAAA"));
         long pick;
         String time;
@@ -49,8 +62,8 @@ public class Algorithm_tree {
         int cores = Runtime.getRuntime().availableProcessors();
         //System.out.println("Votre machine a " + cores + " cpu(s).");
         //System.out.println("Un même nombre de threads vas être utilisé pour être optimal.\n");
-        System.out.println("l\ttime (heures:minutes:secondes,millisecondes)\tresult");
-        System.out.println("");
+        write("l\ttime\t\tresult");
+        write("");
 
         // Calculate A (l = 1)
         pick = System.currentTimeMillis();
@@ -58,7 +71,7 @@ public class Algorithm_tree {
             root.addA(key, null);
         Case caseA = new Case(root.getASon(), Case.TypeCase.ABorder);
         time = getInterval(pick, System.currentTimeMillis());
-        System.out.println(1 + "\t" + time + "\t" + caseA.count());
+        addLine(1, time, caseA.count());
 
         // Calculate B and A2 (l = 2)
         pick = System.currentTimeMillis();
@@ -73,7 +86,7 @@ public class Algorithm_tree {
         Case caseA2 = caseA.addEnsemble(Algorithm_tree.dicoS12, Case.TypeCase.ABorder);
 
         time = getInterval(pick, System.currentTimeMillis());
-        System.out.println(2 + "\t" + time + "\t" + (caseA2.count() + caseB.count()));
+        addLine(2, time, (caseA2.count() + caseB.count()));
 
 
         // Calculate l = i until i == limit
@@ -88,7 +101,7 @@ public class Algorithm_tree {
             bufferTemp = buffer.compute();
             time = getInterval(pick, System.currentTimeMillis());
 
-            System.out.println(buffer.id + "\t" + time + "\t" + buffer.nbCIrcular);
+            addLine(buffer.id, time, buffer.nbCIrcular);
 
             buffer = bufferTemp;
         }

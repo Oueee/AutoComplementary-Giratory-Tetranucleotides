@@ -172,9 +172,6 @@ public class Main {
         root.addB(new Tetranucleotide("CGTA"), null);
         root.addB(new Tetranucleotide("GTTT"), null);
 
-/*        Case c = new Case(root);
-        c.combinate();
-        System.out.println(c.count());*/
     }
 
     public static void main(String[] args){
@@ -183,6 +180,8 @@ public class Main {
         //someChecks();
 
         Algorithm_tree algo = new Algorithm_tree(dicoS12, dicoS114);
-        algo.run();
+        Gui gui = new Gui();
+        gui.initialize(algo);
+
     }
 }
