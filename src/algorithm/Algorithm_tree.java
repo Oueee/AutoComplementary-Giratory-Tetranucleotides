@@ -18,10 +18,10 @@ import java.util.Date;
 /**
  * Created by rinku on 12/14/15.
  */
-public class Algorithm_tree {
+public class Algorithm_tree implements Runnable{
     public static HashMap<Tetranucleotide, Set<Tetranucleotide>> dicoS12;
     public static HashMap<Tetranucleotide, Set<Tetranucleotide>> dicoS114;
-    private TextArea console;
+    public TextArea console;
 
     public Algorithm_tree(HashMap dicoS12, HashMap dicoS114) {
         this.dicoS12 = dicoS12;
@@ -52,7 +52,8 @@ public class Algorithm_tree {
         write(id + "\t" + time + "\t" + result);
     }
 
-    public void run(TextArea console) {
+    @Override
+    public void run() {
         this.console = console;
 
         Node root = new Node(new Tetranucleotide("AAAA"));

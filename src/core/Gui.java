@@ -41,6 +41,7 @@ public class Gui extends JFrame{
         final TextArea console = new TextArea();
         console.setEditable(false);
         panel_2.add(console, BorderLayout.CENTER);
+        algo.console = console;
 
         JPanel panel_1 = new JPanel();
         panel_2.add(panel_1, BorderLayout.SOUTH);
@@ -52,7 +53,8 @@ public class Gui extends JFrame{
         btnRun.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent arg0) {
                 btnRun.setEnabled(false);
-                algo.run(console);
+
+                new Thread(algo).start();
             }});
 
         JButton btnQuitter = new JButton("Exit");

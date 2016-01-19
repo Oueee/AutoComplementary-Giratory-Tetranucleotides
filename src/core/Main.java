@@ -182,6 +182,5 @@ public class Main {
         Algorithm_tree algo = new Algorithm_tree(dicoS12, dicoS114);
         Gui gui = new Gui();
         gui.initialize(algo);
-
     }
 }
