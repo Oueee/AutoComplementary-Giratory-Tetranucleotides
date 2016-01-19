@@ -95,7 +95,7 @@ public class Algorithm_tree {
         buffer.add(caseB);
         buffer.add(caseA2);
 
-        int limit = 10;
+        int limit = 60;
         for (int i = 2; i < limit; i++) {
             pick = System.currentTimeMillis();
             bufferTemp = buffer.compute();
